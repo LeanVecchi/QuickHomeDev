@@ -1,0 +1,55 @@
+/**
+ * TEMPLATE GLOBAL CSS
+ */
+
+.lineven-additionalproductsorder-section .card-block { padding-top: 14px!important; padding-bottom: 0px!important; }
+.lineven-additionalproductsorder-section .header-hr { margin-top: 0px!important; clear: both; }
+.lineven-additionalproductsorder-section .buttons .material-icons { margin-right: 0px!important; }
+.lineven-additionalproductsorder-section .lapo-cart-checkbox .material-icons { margin-right: 0px!important; }
+@media (max-width:767px) {
+    .lineven-additionalproductsorder-section .card-block { }
+    .lineven-additionalproductsorder-section .apo-products { padding: 0!important; }
+}
+
+/* Tooltip */
+.lineven-additionalproductsorder-section .apo-product-extra .lapo-tooltip-content { display: none; }
+.lineven-additionalproductsorder-section .apo-product-extra .lapo-tooltip-content .lapo-tooltip-content-product .lapo-tooltip-product-image { display: inline-block; }
+.lineven-additionalproductsorder-section .apo-product-extra .apo-product .lapo-quickview { }
+.lineven-additionalproductsorder-section .apo-product-extra .apo-product .lapo-quickview i {
+    padding: 5px;
+    color: #2fb5d2;
+}
+.lineven-additionalproductsorder-section .apo-product-extra .apo-carousel-used .apo-product .lapo-quickview i {
+    padding: 0!important;
+}
+@media all and (min-width: 480px) {
+    .lineven-additionalproductsorder-section .apo-product-extra .apo-product .lapo-quickview { float: right; }
+}
+
+/* Carousel */
+.lineven-additionalproductsorder-section .apo-carousel-used .card-block { clear: both; }
+.lineven-additionalproductsorder-section .apo-carousel-used .header-block { clear: both; }
+.lineven-additionalproductsorder-section .apo-carousel-used .header-title { float: left; }
+.lineven-additionalproductsorder-section .apo-carousel-used .apo-carousel-controls { float: right; }
+.lineven-additionalproductsorder-section .apo-carousel-used .apo-carousel-controls i { font-size: 22px!important; }
+.lineven-additionalproductsorder-section .apo-carousel-used .apo-carousel-controls .apo-carousel-controls-next { margin-left: 12px; }
+
+/* Busy */
+.apo-busyload-container, .apo-busyload-container-item {
+    align-items: initial!important;
+}
+.apo-busyload-spinner {
+    margin-top: 50px!important;
+}
+
+/* Tooltipster */
+.tooltipster-sidetip.tooltipster-light.tooltipster-apo-customized .tooltipster-box {
+    background: #ffffff;
+    border: 1px solid #9a9a9a;
+    box-shadow: 5px 5px 2px 0 rgba(0,0,0,0.4);
+    text-align: center;
+}
+.tooltipster-sidetip.tooltipster-light.tooltipster-apo-customized .tooltipster-box .lapo-tooltip-content-product { padding: 10px;}
+.tooltipster-sidetip.tooltipster-light.tooltipster-apo-customized .tooltipster-box .lapo-tooltip-content-product .lapo-tooltip-product-image img { margin:0 6px; border:1px solid #D0D1D5; width: inherit!important; }
+.tooltipster-sidetip.tooltipster-light.tooltipster-apo-customized .tooltipster-box .lapo-tooltip-content-product .lapo-tooltip-product-description { margin-top: 18px; }
+.tooltipster-sidetip.tooltipster-light.tooltipster-apo-customized .tooltipster-box .lapo-tooltip-content-product .lapo-tooltip-product-attribute-designation { margin-top: 8px; font-style: italic; }

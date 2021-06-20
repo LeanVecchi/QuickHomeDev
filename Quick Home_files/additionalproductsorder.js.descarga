@@ -1,0 +1,427 @@
+/**
+ * Script additionalproductsorder.js.
+ *
+ * AdditionalProductsOrder Merchandizing (Version 3.1.2)
+ *
+ * @author    Lineven
+ * @copyright 2012-2021 Lineven
+ * @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ * International Registered Trademark & Property of Lineven
+ */
+
+$(document).ready(function() {
+	if (typeof lineven_apo !== 'undefined') {
+		AdditionalProductsOrder.initialize();
+	}
+});
+var AdditionalProductsOrder = {
+	
+	/**
+	 * Iniatialize.
+	 */
+	initialize: function()
+	{
+        // For order page only
+        if (typeof lineven_apo !== 'undefined' && typeof lineven_apo.datas !== 'undefined') {
+            if (lineven_apo.datas.current_page == 'cart') {
+                if (lineven_apo.datas.refresh_mode != 'NOTHING') {
+                    prestashop.on('updateCart', function () {
+                        AdditionalProductsOrder.Refresh.initialize();
+                    });
+                }
+            }
+            if (lineven_apo.datas.current_page == 'product') {
+                AdditionalProductsOrder.ProductExtra.initialize();
+            }
+        }
+        // Mansory
+        AdditionalProductsOrder.Page.cardMasonry();
+
+        // Carousel
+        AdditionalProductsOrder.Page.loadCarousel();
+
+        // Statistics
+        AdditionalProductsOrder.Statistics.initialize();
+	},
+
+    /**
+     * Product Extra
+     */
+    ProductExtra: {
+        tooltip_used: false,
+
+        /**
+         * Iniatialize.
+         */
+        initialize: function()
+        {
+            // Initialize checkbox
+            $('input[name="lapo-add-to-cart-checkbox[]"]').change(function() {
+                if ($(this).is(':checked')) {
+                    $(this).closest('.apo-product').addClass('apo-product-checked');
+                } else {
+                    $(this).closest('.apo-product').removeClass('apo-product-checked');
+                }
+            });
+            $('input[name="lapo-add-to-cart-checkbox[]"]').each(function() {
+                $(this).prop('checked', false);
+            });
+            $('.lapo-add-to-cart-button-check').on('click', function() {
+                var checkbox = $('#lapo-add-to-cart-checkbox-'+$(this).attr('data-id-product')+'-'+$(this).attr('data-id-product-attribute'));
+                if (checkbox.is(':checked')) {
+                    checkbox.prop('checked', false);
+                    $(this).closest('.apo-product').removeClass('apo-product-checked');
+                    $(this).find('.material-icons').html('add_shopping_cart');
+                } else {
+                    checkbox.prop('checked', true);
+                    $(this).closest('.apo-product').addClass('apo-product-checked');
+                    $(this).find('.material-icons').html('delete');
+                }
+            });
+            // Initialize tooltips
+            $('.lapo-tooltip-content').each(function () {
+                AdditionalProductsOrder.ProductExtra.tooltip_used = true;
+                $(this).closest('.apo-product').find('.product-container').attr('data-tooltip-content', '#lapo-tooltip-product-'+$(this).attr('data-id-product')+'-'+$(this).attr('data-id-product-attribute'));
+                $(this).closest('.apo-product').find('.product-container').addClass('lapo-tooltip-product-'+$(this).attr('data-id-product')+'-'+$(this).attr('data-id-product-attribute'));
+            });
+            if (AdditionalProductsOrder.ProductExtra.tooltip_used) {
+                $('.apo-product .product-container').addClass('lapo-tooltip');
+                $(document).ready(function() {
+                    $('.lapo-tooltip').tooltipster({
+                        theme: ['tooltipster-light', 'tooltipster-apo-customized'],
+                        contentCloning: false,
+                        hideOnClick: true,
+                        contentAsHTML: true,
+                        interactive: true
+                    });
+                });
+            }
+            prestashop.on('updateCart', function (event) {
+                if ($('input[name="lapo-add-to-cart-checkbox[]"]:checked').length) {
+                    if (event && event.reason && event.reason.linkAction == 'add-to-cart') {
+                        $('input[name="lapo-add-to-cart-checkbox[]"]:checked').each(function () {
+                            var checkbox_object = $(this);
+                            $.ajax({
+                                type: "POST",
+                                url: $(this).attr('data-cart-url'),
+                                data: {
+                                    add: 1,
+                                    id_product: $(this).attr('data-id-product'),
+                                    id_product_attribute: $(this).attr('data-id-product-attribute'),
+                                    action: 'update',
+                                    token: $(this).attr('data-token')
+                                },
+                                dataType: "json",
+                                success: function (jsonData, textStatus, jqXHR) {
+                                    if (lineven_apo.datas.statistics_active && lineven_apo.datas.statistics_add_to_cart) {
+                                        AdditionalProductsOrder.Statistics.trace(checkbox_object, checkbox_object.attr('data-cart-url'), 'C', checkbox_object.attr('data-id-association'), checkbox_object.attr('data-id-product'), true);
+                                    }
+                                },
+                                error: function (XMLHttpRequest, textStatus, errorThrown) {},
+                                complete: function (jqXHR, textStatus) {
+                                    checkbox_object.prop('checked', false);
+                                }
+                            });
+                        });
+                    } else {
+                        $('input[name="lapo-add-to-cart-checkbox[]"]:checked').each(function () {
+                            $(this).prop('checked', false);
+                        });
+                    }
+                }
+            });
+        }
+    },
+
+    /**
+	 * Refresh.
+     */
+	Refresh: {
+
+        /**
+         * Iniatialize.
+         */
+        initialize: function()
+        {
+            if (lineven_apo.datas.refresh_mode == 'AJAX') {
+                AdditionalProductsOrder.Loader.show();
+            }
+            if (lineven_apo.datas.refresh_delay == 0) {
+                AdditionalProductsOrder.Refresh.execute();
+            } else {
+                setTimeout(function(){
+                    AdditionalProductsOrder.Refresh.execute();
+                }, lineven_apo.datas.refresh_delay);
+            }
+        },
+
+        /**
+         * Refresh products list.
+         */
+        execute: function()
+        {
+            if (lineven_apo.datas.refresh_mode == 'RELOAD') {
+                window.location = lineven_apo.urls.cart_url;
+            } else {
+                if (lineven_apo.datas.refresh_mode == 'AJAX') {
+                    $.ajax({
+                        url: lineven_apo.urls.service_dispatcher_ssl_url,
+                        type: 'POST',
+                        data: {
+                            additionalproductsorder_service_controller: "Refresh",
+                            additionalproductsorder_service_controller_step: "init_content",
+                            additionalproductsorder_ajax_id_customer: lineven_apo.ajax.id_customer,
+                            additionalproductsorder_ajax_customer_token: lineven_apo.ajax.customer_token,
+                            additionalproductsorder_ajax_id_guest: lineven_apo.ajax.id_guest,
+                            additionalproductsorder_ajax_guest_token: lineven_apo.ajax.guest_token
+                        },
+                        dataType: "json",
+                        cache: false,
+                        global: false,
+                        success: function (jsonData, textStatus, jqXHR) {
+                            if (jsonData != undefined && jsonData.html != undefined) {
+                                $('.lineven-additionalproductsorder').html(jsonData.html);
+                            } else {
+                                $('.lineven-additionalproductsorder').empty();
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            $('.lineven-additionalproductsorder').empty();
+                        },
+                        complete: function (jqXHR, textStatus) {
+                            // Statistics
+                            AdditionalProductsOrder.Statistics.initialize();
+                            // Mansory
+                            AdditionalProductsOrder.Page.cardMasonry();
+                            // Loader
+                            AdditionalProductsOrder.Loader.hide();
+                        }
+                    });
+                }
+            }
+        },
+	},
+
+    /**
+     * Page.
+     */
+    Page: {
+
+        /**
+         * On add to cart product.
+         */
+        onAddToCartProduct: function(object)
+        {
+            $.ajax({
+                url: $(object).attr('data-cart-url'),
+                type: 'POST',
+                data: {
+                    ajax: true
+                },
+                cache: false,
+                global: false,
+                success: function (jsonData, textStatus, jqXHR) {
+                    window.top.location = lineven_apo.urls.cart_url;
+                }
+            });
+        },
+
+        /**
+         * Load carousel.
+         */
+        loadCarousel: function() {
+            if (lineven_apo.datas.current_page == 'product' &&
+                lineven_apo.datas.product_extra_settings.template == 'thumbnails_carousel') {
+                $('.apo-carousel').slick({
+                    infinite: false,
+                    slidesToScroll: 1,
+                    arrows: false,
+                    variableWidth: true
+                });
+                $('.apo-carousel-controls-previous').on('click', function() {
+                    $(this).closest('.apo-carousel-used').find('.apo-carousel').slick('slickPrev');
+                });
+                $('.apo-carousel-controls-next').on('click', function() {
+                    $(this).closest('.apo-carousel-used').find('.apo-carousel').slick('slickNext');
+                });
+            }
+        },
+
+        /**
+         * Card masonry.
+         */
+        cardMasonry: function() {
+            if (lineven_apo.datas.current_page == 'cart' && lineven_apo.datas.order_page_settings.template == 'card_list') {
+                $('.apo-products-cards').masonry({
+                    // options
+                    itemSelector: '.apo-product-card',
+                    gutter: 10
+                });
+            }
+        }
+    },
+
+    /**
+     * Products list commment.
+     */
+    ProductsListComments: {
+        /**
+         * Display products comments grade for classic templates.
+         * @param int id_product Product Id
+         * @param int average_grade Average grade
+         * @param int comment_nb Comment nb
+         */
+        displayPrestashopProductCommentsForClassic: function(id_product, average_grade, comment_nb) {
+            $('.lapo-product-list-reviews-ps_productcomments_'+id_product+' .grade-stars').rating({ grade: average_grade, starWidth: 16 });
+            $('.lapo-product-list-reviews-ps_productcomments_'+id_product+' .comments-nb').html('('+comment_nb+')');
+            $('.lapo-product-list-reviews-ps_productcomments_'+id_product).css('visibility', 'visible');
+        },
+
+        /**
+         * Display Prestashop products comments grade for theme template.
+         */
+        displayPrestashopProductCommentsForTheme: function() {
+            if (lineven_apo.datas.partners_reviews_module == 'productcomments') {
+                $('.product-list-reviews').each(function() {
+                    var id_product = $(this).closest('.product-miniature').attr('data-id-product');
+                    var product_review_object = $(this);
+                    if (id_product) {
+                        $.get(lineven_apo.datas.partners_reviews_module_grade_url, { id_product: id_product }, function(jsonResponse) {
+                            var jsonData = false;
+                            try {
+                                jsonData = JSON.parse(jsonResponse);
+                            } catch (e) {
+                            }
+                            if (jsonData) {
+                                if (jsonData.id_product && jsonData.comments_nb) {
+                                    $('.grade-stars', product_review_object).rating({ grade: jsonData.average_grade, starWidth: 16 });
+                                    $('.comments-nb', product_review_object).html('('+jsonData.comments_nb+')');
+                                    product_review_object.closest('.thumbnail-container').addClass('has-reviews');
+                                    product_review_object.css('visibility', 'visible');
+                                }
+                            }
+                        });
+                    }
+                });
+            } else {
+                AdditionalProductsOrder.ProductsListComments.displayHomeCommentsProductComments();
+            }
+        },
+
+        /**
+         * Display Homecomments products comments grade.
+         */
+        displayHomeCommentsProductComments: function() {
+            if (lineven_apo.datas.partners_reviews_module == 'homecomments' ||
+                lineven_apo.datas.partners_reviews_module == 'hook') {
+                if (typeof LinevenHomeComments !== 'undefined' &&
+                    typeof LinevenHomeComments.ProductsList !== 'undefined') {
+                    LinevenHomeComments.ProductsList.initialize();
+                }
+            }
+        }
+    },
+
+	/**
+	 * Statistics.
+	 */
+	Statistics: {
+
+        /**
+         * Iniatialize.
+         */
+        initialize: function()
+        {
+            // Statistics
+            if (lineven_apo.datas.statistics_active) {
+                if (lineven_apo.datas.statistics_add_to_cart) {
+                    $(".lapo-add-to-cart-stats").click(function (event) {
+                        event.preventDefault();
+                        AdditionalProductsOrder.Statistics.trace(this, $(this).attr('href'), 'C', $(this).attr('data-id-association'), $(this).attr('data-id-product'));
+                    });
+                }
+                if (lineven_apo.datas.statistics_viewed) {
+                    $(".lapo-view").click(function (event) {
+                        event.preventDefault();
+                        AdditionalProductsOrder.Statistics.trace(this, $(this).attr('href'), 'V', $(this).attr('data-id-association'), $(this).attr('data-id-product'));
+                    });
+                }
+            }
+        },
+
+		/**
+		 * Trace
+         * @param object object HTML Object
+         * @param string href Href to add to cart
+         * @param string type Type
+         * @param int id_association Association id
+         * @param int id_product Product id
+         * @param int not_redirect No redirection to cart if yes
+		 */
+		trace: function (object, href, type, id_association, id_product, not_redirect)
+		{
+			if (id_association != 0) {
+                $.ajax({
+		        	url: lineven_apo.urls.service_dispatcher_ssl_url,
+		            type: 'post',
+		            data: {
+		            	additionalproductsorder_service_controller: "Statistics",
+		            	type: type,
+                        additionalproductsorder_ajax_id_customer: lineven_apo.ajax.id_customer,
+                        additionalproductsorder_ajax_customer_token: lineven_apo.ajax.customer_token,
+                        additionalproductsorder_ajax_id_guest: lineven_apo.ajax.id_guest,
+                        additionalproductsorder_ajax_guest_token: lineven_apo.ajax.guest_token,
+		            	id_association: id_association,
+		            	id_product: id_product,
+		            	redirection: href
+		 	        },
+                    global: false,
+		 	        success: function(data)
+					{
+					},
+					error: function(XMLHttpRequest, textStatus, errorThrown) {},
+					complete: function(jqXHR, textStatus) {
+                        if (not_redirect != true) {
+                            $(location).attr('href', href);
+                        }
+					}
+		        });
+            } else {
+                if (not_redirect != true) {
+                    $(location).attr('href', href);
+                }
+            }
+		}
+	},
+
+    /**
+     * Loader.
+     */
+    Loader: {
+        /**
+         * Show.
+         */
+        show: function(timeout) {
+            if ($('.lineven-additionalproductsorder').children().length > 0) {
+                $(".lineven-additionalproductsorder").busyLoad("show", {
+                    action: 'show',
+                    color: "#83d3e4",
+                    maxSize: "90px",
+                    minSize: "90px",
+                    containerClass: "apo-busyload-container",
+                    containerItemClass: "apo-busyload-container-item",
+                    spinnerClass: "apo-busyload-spinner",
+                    background: 'rgba(255, 255, 255, 0.6)'
+                });
+                var handle = setTimeout("AdditionalProductsOrder.Loader.hide()", 60000);
+            }
+        },
+
+        /**
+         * Hide.
+         */
+        hide: function() {
+            $(".lineven-additionalproductsorder").busyLoad("hide");
+        }
+    }
+};

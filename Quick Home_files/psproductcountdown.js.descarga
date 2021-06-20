@@ -1,0 +1,158 @@
+/**
+ * NOTICE OF LICENSE
+ *
+ * This file is licenced under the Software License Agreement.
+ * With the purchase or the installation of the software in your application
+ * you accept the licence agreement.
+ *
+ * @author    Presta.Site
+ * @copyright 2018 Presta.Site
+ * @license   LICENSE.txt
+ */
+$(function () {
+    pspc_initCountdown();
+
+    // Blocklayered etc compatibility
+    if (pspc_psv < 1.7 && $('#layered_block_left').length) {
+        $(document).ajaxComplete(function () {
+            pspc_initCountdown('.pspc-inactive');
+        });
+    } else if (typeof prestashop == 'object' && typeof prestashop.on == 'function') {
+        prestashop.on('updateProductList', function () {
+            pspc_initCountdown('.pspc-inactive');
+        });
+
+        prestashop.on('updatedProduct', function (event) {
+            pspc_initCountdown('.pspc-inactive');
+        });
+    }
+});
+
+// Parse countdown string to an object
+function pspc_strfobj(str) {
+    var pieces = str.split(':');
+    var obj = {};
+    pspc_labels.forEach(function(label, i) {
+        obj[label] = pieces[i]
+    });
+    return obj;
+}
+// Return the time components that diffs
+function pspc_diff(obj1, obj2) {
+    var diff = [];
+    pspc_labels.forEach(function(key) {
+        if (obj1[key] !== obj2[key]) {
+            diff.push(key);
+        }
+    });
+    return diff;
+}
+
+function pspc_initCountdown(selector) {
+    selector = (selector ? selector : '.pspc-inactive');
+    $(selector).each(function(){
+        var $pspc = $(this);
+        $pspc.addClass('psproductcountdown hide_weeks');
+        var $pspc_main = $(this).find('.pspc-main');
+        if (!$pspc_main.length) {
+            $pspc.append('<div class="pspc-main" />');
+            $pspc_main = $(this).find('.pspc-main');
+        }
+        $pspc.removeClass('pspc-inactive');
+
+        // get To date
+        var to = $(this).data('to');
+        if (!isNaN(to)) {
+            to = parseInt(to);
+        } else {
+            to = dateStringToTimestamp(to);
+        }
+
+        var now = + new Date();
+        if (!to || (to < now && (pspc_hide_expired || pspc_hide_after_end))) {
+            $(this).hide();
+            return true;
+        }
+
+        var labels = pspc_labels,
+            template = _.template(pspc_countdown_tpl);
+        if (pspc_show_weeks) {
+            var currDate = '00:00:00:00:00';
+            var nextDate = '00:00:00:00:00';
+        } else {
+            var currDate = '00:00:00:00';
+            var nextDate = '00:00:00:00';
+        }
+
+        // Build the layout
+        var initData = pspc_strfobj(currDate);
+        labels.forEach(function(label, i) {
+            $pspc_main.append(template({
+                curr: initData[label],
+                next: initData[label],
+                label: label,
+                label_lang: pspc_labels_lang[label]
+            }));
+        });
+        // Starts the countdown
+        $pspc_main.pspccountdown(to, function(event) {
+            var now = + new Date();
+
+            if (to < now) {
+                $pspc.hide(400);
+            }
+
+            var data;
+            if (pspc_show_weeks)
+                var newDate = event.strftime('%w:%d:%H:%M:%S');
+            else
+                var newDate = event.strftime('%D:%H:%M:%S');
+
+            if (newDate !== nextDate) {
+                currDate = nextDate;
+                nextDate = newDate;
+                // Setup the data
+                data = {
+                    'curr': pspc_strfobj(currDate),
+                    'next': pspc_strfobj(nextDate)
+                };
+                // Apply the new values to each node that changed
+                pspc_diff(data.curr, data.next).forEach(function(label) {
+                    var selector = '.%s'.replace(/%s/, label),
+                        $node = $pspc_main.find(selector);
+                    // Update the node
+                    $node.removeClass('flip hidden');
+                    $node.find('.curr').text(data.curr[label]);
+                    $node.find('.next').text(data.next[label]);
+                    // Wait for a repaint to then flip
+                    _.delay(function($node) {
+                        $node.addClass('flip');
+                    }, 50, $node);
+                });
+            }
+        });
+    });
+}
+if (typeof initCountdown === 'undefined') {
+    var initCountdown = pspc_initCountdown;
+}
+
+function dateStringToTimestamp(dateString) {
+    var dateTimeParts = dateString.split(' '),
+        timeParts = dateTimeParts[1].split(':'),
+        dateParts = dateTimeParts[0].split('-'),
+        date;
+
+    date = new Date(dateParts[0], parseInt(dateParts[1], 10) - 1, dateParts[2], timeParts[0], timeParts[1]);
+
+    return date.getTime();
+}
+
+var pspc_countdown_tpl = '' +
+        '<div class="time <%= label %>">' +
+            '<span class="count curr top"><%= curr %></span>' +
+            '<span class="count next top"><%= next %></span>' +
+            '<span class="count next bottom"><%= next %></span>' +
+            '<span class="count curr bottom"><%= curr %></span>' +
+            '<span class="label"><%= label_lang.length < 6 ? label_lang : label_lang.substr(0, 3)  %></span>' +
+    '</div>';

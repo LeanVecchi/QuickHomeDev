@@ -1,0 +1,70 @@
+/**
+ * TEMPLATE LIST B CSS
+ */
+
+.lineven-additionalproductsorder-section .list-b {margin-top: 10px; }
+.lineven-additionalproductsorder-section .list-b .clear { clear: both; }
+.lineven-additionalproductsorder-section .list-b .header-title { }
+.lineven-additionalproductsorder-section .list-b .header-hr { margin-bottom: 15px; }
+.lineven-additionalproductsorder-section .list-b h3 { }
+.lineven-additionalproductsorder-section .list-b .apo-products { margin-bottom: 1rem; }
+.lineven-additionalproductsorder-section .list-b .row { clear:both; padding:0 15px; padding-right:45px; margin-bottom: 14px!important; font-weight:bold; line-height:18px; }
+.lineven-additionalproductsorder-section .list-b .product-image { margin-right: 5px; }
+.lineven-additionalproductsorder-section .list-b .product-image img { margin:0 6px; border:1px solid #D0D1D5; width: inherit!important; }
+.lineven-additionalproductsorder-section .list-b .container-description { }
+.lineven-additionalproductsorder-section .list-b .container-description .product-name { font-size:1em; font-weight: bold; }
+.lineven-additionalproductsorder-section .list-b .container-description .product-name a { color:#595A5E; text-decoration: none; }
+.lineven-additionalproductsorder-section .list-b .container-description .product-name a:hover { text-decoration: underline; }
+.lineven-additionalproductsorder-section .list-b .container-description .product-description { position: relative!important; height: inherit!important; width: inherit!important; background: none!important; font-size:0.8em; font-weight:normal; text-transform: none; margin-top: 3px; }
+.lineven-additionalproductsorder-section .list-b .container-description .product-description a { text-decoration: none; color: inherit!important;}
+.lineven-additionalproductsorder-section .list-b .container-description .product-description a:hover { text-decoration: none; }
+.lineven-additionalproductsorder-section .list-b .container-description .product-options { font-size:0.7em; font-weight: bold; font-style: italic; margin-bottom: 3px;}
+.lineven-additionalproductsorder-section .list-b .container-description .product-attribute-designation { font-size:0.7em; font-weight: bold; margin-top: 4px; margin-bottom: 3px;}
+.lineven-additionalproductsorder-section .list-b .product-price { font-size:1em; margin-top: 8px; }
+.lineven-additionalproductsorder-section .list-b .product-price .old-price { font-size:1em!important; }
+.lineven-additionalproductsorder-section .list-b .product-price .price-percent-reduction { font-size: 1em!important;}
+.lineven-additionalproductsorder-section .list-b .product-price .price { }
+.lineven-additionalproductsorder-section .list-b .buttons { }
+
+/* Extra products specificities */
+.lineven-additionalproductsorder-section .apo-product-extra .list-b .card-block { padding-top: 8px!important; }
+.lineven-additionalproductsorder-section .apo-product-extra .list-b .lapo-cart-checkbox { vertical-align: middle; text-align: center; width: 15px; margin-top: 18px; }
+.lineven-additionalproductsorder-section .apo-product-extra .list-b .apo-product-checked { background-color: #ebf5fb; }
+.lineven-additionalproductsorder-section .apo-product-extra .list-b .product-container { padding-left: 5px; }
+.lineven-additionalproductsorder-section .apo-product-extra .list-b .row { margin:0!important; margin-bottom: 8px!important;}
+.lineven-additionalproductsorder-section .apo-product-extra .list-b .lapo-row-col { padding:0!important; }
+
+@media only screen and (max-width: 576px)
+{
+    .lineven-additionalproductsorder-section .list-b .row { padding:0 15px!important; }
+    .lineven-additionalproductsorder-section .list-b .apo-products .apo-product { text-align:center!important; }
+    .lineven-additionalproductsorder-section .list-b .apo-products .apo-product .container-description { float:none!important; margin-top: 17px; }
+    .lineven-additionalproductsorder-section .list-b .apo-products .apo-product .product-image { float:none!important; display: inline-block; }
+    .lineven-additionalproductsorder-section .list-b .apo-products .apo-product .buttons { float:none!important; margin-top: 12px; }
+    .lineven-additionalproductsorder-section .apo-product-extra .list-b .apo-product .lapo-quickview i { padding: 0px!important; }
+
+    .lineven-additionalproductsorder-section .apo-product-extra .list-b .lapo-cart-checkbox { margin-top: 12px; margin-bottom: 8px; }
+    .lineven-additionalproductsorder-section .apo-product-extra .list-b .lapo-row-col { text-align: center; }
+    .lineven-additionalproductsorder-section .apo-product-extra .list-b .lapo-cart-checkbox { display: inline-block; width: inherit!important; }
+}
+@media all and (min-width: 1201px) and (max-width: 1404px) {
+    .lineven-additionalproductsorder-section .list-b .apo-products .apo-product .container-description { max-width: 368px; }
+}
+@media all and (min-width: 1100px) and (max-width: 1200px) {
+    .lineven-additionalproductsorder-section .list-b .apo-products .apo-product .container-description { max-width: 278px; }
+}
+@media all and (min-width: 980px) and (max-width: 1099px) {
+    .lineven-additionalproductsorder-section .list-b .apo-products .apo-product .container-description { max-width: 268px; }
+}
+@media all and (min-width: 768px) and (max-width: 979px) {
+    .lineven-additionalproductsorder-section .list-b .apo-products .apo-product .container-description { max-width: 150px; }
+}
+
+/* Homecomments reviews */
+.lineven-additionalproductsorder-section .list-b .reviews { text-align: left!important; margin-top: 5px; margin-bottom: 5px; min-width: 250px; }
+.lineven-additionalproductsorder-section .list-b .reviews .partner_average_star { float: left; margin-right: 8px; }
+.lineven-additionalproductsorder-section .list-b .reviews .partner_details { font-size: 0.8em; font-weight: normal; padding-top: 2px; }
+
+/* Prestashop Products reviews */
+.lineven-additionalproductsorder-section .list-b .hook-reviews { display: inline-block; text-align:center; }
+.lineven-additionalproductsorder-section .list-b .hook-reviews .product-list-reviews { position: relative!important; top: auto!important; margin-top: 5px; background: none!important; }

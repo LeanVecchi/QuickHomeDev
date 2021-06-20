@@ -1,0 +1,74 @@
+/**
+ * TEMPLATE LIST A CSS
+ */
+
+.lineven-additionalproductsorder-section .list-a {margin-top: 10px; }
+.lineven-additionalproductsorder-section .list-a .clear { clear: both; }
+.lineven-additionalproductsorder-section .list-a .header-title { }
+.lineven-additionalproductsorder-section .list-a .header-hr { margin-bottom: 15px; }
+.lineven-additionalproductsorder-section .list-a h3 { }
+.lineven-additionalproductsorder-section .list-a ul.apo-products { clear:both; list-style-type:none; }
+.lineven-additionalproductsorder-section .list-a ul.apo-products li.apo-product  { padding:0 15px; font-weight:bold; line-height:18px; margin-top: 6px!important; margin-bottom: 14px!important; }
+.lineven-additionalproductsorder-section .list-a ul.apo-products li.apo-product .product-image { float:left; margin-right: 5px; }
+.lineven-additionalproductsorder-section .list-a ul.apo-products li.apo-product img { margin:0 6px; border:1px solid #D0D1D5; width: inherit!important; }
+.lineven-additionalproductsorder-section .list-a ul.apo-products li.apo-product .container-description { float: left; }
+.lineven-additionalproductsorder-section .list-a ul.apo-products li.apo-product .container-description .product-name { font-size:1em; font-weight: bold; }
+.lineven-additionalproductsorder-section .list-a ul.apo-products li.apo-product .container-description .product-name a { color:#595A5E; text-decoration: none; }
+.lineven-additionalproductsorder-section .list-a ul.apo-products li.apo-product .container-description .product-name a:hover { text-decoration: underline; }
+.lineven-additionalproductsorder-section .list-a ul.apo-products li.apo-product .container-description .product-description {  position: relative!important; height: inherit!important; width: inherit!important; background: none!important; font-size:0.9em; font-weight:normal; text-transform: none; margin-top: 3px;  }
+.lineven-additionalproductsorder-section .list-a ul.apo-products li.apo-product .container-description .product-description a { text-decoration: none; color: inherit!important;}
+.lineven-additionalproductsorder-section .list-a ul.apo-products li.apo-product .container-description .product-description a:hover { text-decoration: underline; }
+.lineven-additionalproductsorder-section .list-a ul.apo-products li.apo-product .container-description .product-options { font-size:0.7em; font-weight: bold; font-style: italic; margin-bottom: 3px;}
+.lineven-additionalproductsorder-section .list-a ul.apo-products li.apo-product .container-description .product-attribute-designation { font-size:0.7em; font-weight: bold; }
+.lineven-additionalproductsorder-section .list-a ul.apo-products li.apo-product .product-price { font-size:1em; margin-top: 3px; }
+.lineven-additionalproductsorder-section .list-a ul.apo-products li.apo-product .product-price .price { }
+.lineven-additionalproductsorder-section .list-a ul.apo-products li.apo-product .product-price .old-price { font-size:1em!important; }
+.lineven-additionalproductsorder-section .list-a ul.apo-products li.apo-product .product-price .price-percent-reduction { font-size: 1em!important;}
+.lineven-additionalproductsorder-section .list-a ul.apo-products li.apo-product .buttons { float: right; }
+.lineven-additionalproductsorder-section .list-a ul.apo-products li.apo-product .buttons .detail-button { text-transform: none!important; }
+
+/* Extra products specificities */
+.lineven-additionalproductsorder-section .apo-product-extra .list-a .card-block { padding-top: 8px!important; }
+.lineven-additionalproductsorder-section .apo-product-extra .list-a ul.apo-products li.apo-product { padding:4px 4px 4px 4px!important; clear: both; margin: 5px!important; }
+.lineven-additionalproductsorder-section .apo-product-extra .list-a ul.apo-products li.apo-product a { clear: both; }
+.lineven-additionalproductsorder-section .apo-product-extra .list-a ul.apo-products li.apo-product .lapo-cart-checkbox { display: table-cell; vertical-align: middle; text-align: center; width: 15px; }
+.lineven-additionalproductsorder-section .apo-product-extra .list-a ul.apo-products li.apo-product-checked { background-color: #ebf5fb; }
+.lineven-additionalproductsorder-section .apo-product-extra .list-a ul.apo-products li.apo-product .product-container { display: table-cell; padding-left: 5px; }
+
+@media only screen and (max-width: 479px)
+{
+    .lineven-additionalproductsorder-section .list-a ul.apo-products li.apo-product { text-align:center!important; }
+    .lineven-additionalproductsorder-section .list-a ul.apo-products li.apo-product .container-description { float:none!important; margin-top: 17px; }
+    .lineven-additionalproductsorder-section .list-a ul.apo-products li.apo-product .product-image { float:none!important; display: inline-block; }
+    .lineven-additionalproductsorder-section .list-a ul.apo-products li.apo-product .buttons { float:none!important; margin-top: 12px; }
+
+    .lineven-additionalproductsorder-section .apo-product-extra .list-a ul.apo-products li.apo-product { border: 1px solid #D0D1D5; }
+
+}
+@media all and (min-width: 1201px) and (max-width: 1404px) {
+    .lineven-additionalproductsorder-section .list-a ul.apo-products li.apo-product .container-description { max-width: 368px; }
+}
+@media all and (min-width: 1100px) and (max-width: 1200px) {
+    .lineven-additionalproductsorder-section .apo-shoppingcart-footer .list-a ul.apo-products li.apo-product .container-description { max-width: 258px; }
+    .lineven-additionalproductsorder-section .list-a ul.apo-products li.apo-product .container-description { max-width: 278px; }
+}
+@media all and (min-width: 980px) and (max-width: 1099px) {
+    .lineven-additionalproductsorder-section .apo-shoppingcart-footer .list-a ul.apo-products li.apo-product .container-description { max-width: 328px; }
+    .lineven-additionalproductsorder-section .list-a ul.apo-products li.apo-product .container-description { max-width: 268px; }
+}
+@media all and (min-width: 768px) and (max-width: 979px) {
+    .lineven-additionalproductsorder-section .apo-shoppingcart-footer .list-a ul.apo-products li.apo-product .container-description { max-width: 326px; }
+    .lineven-additionalproductsorder-section .list-a ul.apo-products li.apo-product .container-description { max-width: 150px; }
+}
+@media all and (min-width: 480px) and (max-width: 767px) {
+    .lineven-additionalproductsorder-section .list-a ul.apo-products li.apo-product .container-description { max-width: 268px; }
+}
+
+/* Homecomments reviews */
+.lineven-additionalproductsorder-section .list-a .reviews { text-align: left!important; margin-top: 5px; margin-bottom: 5px; min-width: 250px; }
+.lineven-additionalproductsorder-section .list-a .reviews .partner_average_star { float: left; margin-right: 8px; }
+.lineven-additionalproductsorder-section .list-a .reviews .partner_details { font-size: 11px; font-weight: normal; padding-top: 2px; }
+
+/* Prestashop Products reviews */
+.lineven-additionalproductsorder-section .list-a .hook-reviews { display: inline-block; text-align:center; }
+.lineven-additionalproductsorder-section .list-a .hook-reviews .product-list-reviews { position: relative!important; top: auto!important; margin-top: 5px; background: none!important; }
